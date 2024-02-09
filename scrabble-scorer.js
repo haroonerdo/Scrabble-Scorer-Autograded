@@ -19,11 +19,9 @@ function oldScrabbleScorer(word) {
 	for (let i = 0; i < word.length; i++) {
  
 	  for (const pointValue in oldPointStructure) {
- 
-		 if (oldPointStructure[pointValue].includes(word[i])) {
+      if (oldPointStructure[pointValue].includes(word[i])) {
 			letterPoints += `Points for '${word[i]}': ${pointValue}\n`
 		 }
- 
 	  }
 	}
 	return letterPoints;
@@ -33,27 +31,129 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   console.log("Let's play some scrabble! Enter a word:");
+   let wordTest = input.question("Let's play some scrabble! Enter a word: ");
+   console.log(oldScrabbleScorer(wordTest));
+   console.log(simpleScorer(wordTest));
+   console.log(vowelBonusScorer(wordTest));
 };
 
-let simpleScorer;
+let simpleScorer = function (word) {
+   word = word.toUpperCase();
+   let wordPoint=0;
+wordPoint+=Number(word.length);
+//    for (let i = 0; i < word.length; i++) {
+//       wordPoint += 1;
+//    }
+  return wordPoint;
+};
 
-let vowelBonusScorer;
+let vowelBonusScorer = function (word) {
+   const vowels = ['A', 'E', 'I', 'O', 'U'];
+   word = word.toUpperCase();
+   let wordPoint=0;
 
-let scrabbleScorer;
+   for (let i = 0; i < word.length; i++) {
 
-const scoringAlgorithms = [];
+      if (vowels.includes(word[i])) {
+         wordPoint += 3;
+      } else {
+         wordPoint += 1;
+      }
+   }
+   return wordPoint;
+};
 
-function scorerPrompt() {}
+let scrabbleScorer = function (word) {
+   word = word.toLowerCase();
+	let wordPoint = 0;
+ 
+   let newPointStructure = transform(oldPointStructure);
+   
+	for (let i = 0; i < word.length; i++) {
+      if (word[i] in newPointStructure) {
+         wordPoint += newPointStructure[word[i]];
+      }
+	}
+	return wordPoint;
+};
 
-function transform() {};
+const scoringAlgorithms = [{
+   Name: 'Simple Score',
+   Description: 'Each letter is worth 1 point.',
+   scorerFunction: simpleScorer
+ },
+ {
+   Name: 'Bonus Vowels',
+   Description: 'Vowels are 3 pts, consonants are 1 pt.',
+   scorerFunction: vowelBonusScorer
+ },
+ {
+   Name: 'Scrabble',
+   Description: 'The traditional scoring algorithm.',
+   scorerFunction: scrabbleScorer
+ }
+];
 
-let newPointStructure;
+const scorerFunctionArr=[simpleScorer, vowelBonusScorer, scrabbleScorer]
+
+function scorerPrompt() {
+let wordPoint=0;
+let letterPoints="";
+
+let newWord=input.question("\nLet's play some scrabble!\n\nEnter a word to score: ");
+console.log("Which scoring algorithm would you like to use?\n");
+console.log("0 - Simple: One point per character");
+console.log("1 - Vowel Bonus: Vowels are worth 3 points");
+console.log("2 - Scrabble: Uses scrabble point system");
+
+const selectNumber = input.question("Enter 0, 1, or 2: ");
+
+
+if (selectNumber >= 0 && selectNumber <= 2) {
+   //console.log(scoringAlgorithms[selectNumber]);
+   wordPoint += (scorerFunctionArr[selectNumber](newWord));
+   letterPoints=`Score for \'${newWord}\' : ${wordPoint}`;
+   return console.log(letterPoints);
+} else {
+   console.log("Invalid input. Please enter a number between 0 and 2.");
+   return scorerPrompt();
+}
+}
+
+function transform() {
+   const newPointStructure = {};
+for (const [points, letters] of Object.entries(oldPointStructure)) {
+   for (const letter of letters) {
+     newPointStructure[letter.toLowerCase()] = Number(points);
+   }
+ } 
+ //console.log(newPointStructure); 
+ return newPointStructure;
+};
+
+let newPointStructure = transform(oldPointStructure);
+
 
 function runProgram() {
    initialPrompt();
-   
+   scorerPrompt();
+   transform();
 }
+// console.log("Scrabble scoring values for");
+// console.log("Letter a: ",newPointStructure.a);
+// console.log("Letter j: ",newPointStructure.j);
+// console.log("Letter z: ",newPointStructure["z"]);
+console.log("Scrabble scoring values for\nLetter a: ",newPointStructure.a,
+"\nLetter j: ",newPointStructure.j,
+"\nLetter z: ",newPointStructure["z"]);
+
+console.log("Letters with score '4':",oldPointStructure['4']);
+console.log("3rd letter within the key '4' array:",oldPointStructure['4'][2]);
+
+let letters = oldPointStructure['8'];
+console.log("Letters with score '8':",letters);
+console.log("2nd letter within the key '8' array:",letters[1]);
+
 
 // Don't write any code below this line //
 // And don't change these or your program will not run as expected //
