@@ -29,12 +29,12 @@ function oldScrabbleScorer(word) {
 
 // your job is to finish writing these functions and variables that we've named //
 // don't change the names or your program won't work as expected. //
-
+let newWord="";
 function initialPrompt() {
-   let wordTest = input.question("Let's play some scrabble! Enter a word: ");
-   console.log(oldScrabbleScorer(wordTest));
-   console.log(simpleScorer(wordTest));
-   console.log(vowelBonusScorer(wordTest));
+    newWord = input.question("Let's play some scrabble! Enter a word: ");
+   // console.log(oldScrabbleScorer(wordTest));
+   // console.log(simpleScorer(wordTest));
+   // console.log(vowelBonusScorer(wordTest));
 };
 
 let simpleScorer = function (word) {
@@ -67,7 +67,6 @@ let scrabbleScorer = function (word) {
    word = word.toLowerCase();
 	let wordPoint = 0;
  
-   let newPointStructure = transform(oldPointStructure);
    
 	for (let i = 0; i < word.length; i++) {
       if (word[i] in newPointStructure) {
@@ -100,7 +99,7 @@ function scorerPrompt() {
 let wordPoint=0;
 let letterPoints="";
 
-let newWord=input.question("\nLet's play some scrabble!\n\nEnter a word to score: ");
+// let newWord=input.question("\nLet's play some scrabble!\n\nEnter a word to score: ");
 console.log("Which scoring algorithm would you like to use?\n");
 console.log("0 - Simple: One point per character");
 console.log("1 - Vowel Bonus: Vowels are worth 3 points");
@@ -143,16 +142,16 @@ function runProgram() {
 // console.log("Letter a: ",newPointStructure.a);
 // console.log("Letter j: ",newPointStructure.j);
 // console.log("Letter z: ",newPointStructure["z"]);
-console.log("Scrabble scoring values for\nLetter a: ",newPointStructure.a,
-"\nLetter j: ",newPointStructure.j,
-"\nLetter z: ",newPointStructure["z"]);
+//console.log("Scrabble scoring values for\nLetter a: ",newPointStructure.a,
+// "\nLetter j: ",newPointStructure.j,
+// "\nLetter z: ",newPointStructure["z"]);
 
-console.log("Letters with score '4':",oldPointStructure['4']);
-console.log("3rd letter within the key '4' array:",oldPointStructure['4'][2]);
+// console.log("Letters with score '4':",oldPointStructure['4']);
+// console.log("3rd letter within the key '4' array:",oldPointStructure['4'][2]);
 
-let letters = oldPointStructure['8'];
-console.log("Letters with score '8':",letters);
-console.log("2nd letter within the key '8' array:",letters[1]);
+// let letters = oldPointStructure['8'];
+// console.log("Letters with score '8':",letters);
+// console.log("2nd letter within the key '8' array:",letters[1]);
 
 
 // Don't write any code below this line //
